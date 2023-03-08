@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
+
 class MovieSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,9 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
+  // final Movie movie;
+
+  // const _MoviePoster(this.movie);
   @override
   Widget build(BuildContext context) {
     return Container(
