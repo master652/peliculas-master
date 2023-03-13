@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class MovieSlider extends StatelessWidget {
+  final List<Movie> movies;
+  final String? title;
+
+  const MovieSlider({super.key, required this.movies, this.title});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,8 +28,8 @@ class MovieSlider extends StatelessWidget {
           Expanded(
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 20,
-                  itemBuilder: (_, int index) => _MoviePoster()))
+                  itemCount: movies.length,
+                  itemBuilder: (_, int index) => _MoviePoster(movies[index])))
         ],
       ),
     );
@@ -33,9 +37,9 @@ class MovieSlider extends StatelessWidget {
 }
 
 class _MoviePoster extends StatelessWidget {
-  // final Movie movie;
+  final Movie movie;
 
-  // const _MoviePoster(this.movie);
+  const _MoviePoster(this.movie);
   @override
   Widget build(BuildContext context) {
     return Container(
