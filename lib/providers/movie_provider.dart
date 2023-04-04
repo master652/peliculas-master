@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:peliculas/models/models.dart';
@@ -9,33 +8,38 @@ class MoviesProvider extends ChangeNotifier {
   String _language = 'es-ES';
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies = [];
+
+  int _popularPage = 0;
   MoviesProvider() {
     print('Movies provider Iniciardor');
     this.getOnDisplayMovies();
     this.getPopularMovie();
   }
-  getOnDisplayMovies() async {
-    var url = Uri.https(_baseUrl, '3/movie/now_playing',
-        {'api_key': _apiKey, 'language': _language, 'page': '1'});
+  Future<String> _getJasonData(String endpoint, [int page = 1]) async {
+    var url = Uri.https(_baseUrl, endpoint,
+        {'api_key': _apiKey, 'language': _language, 'page': '$page'});
 
-    // Await the http get response, then decode the json-formatted response.
     final response = await http.get(url);
-    final nowPlayingResponse = NowPlayingResponse.fromRawJson(response.body);
+    return response.body;
+  }
+
+  getOnDisplayMovies() async {
+    final jsonData = await this._getJasonData('3/movie/now_playing');
+
+    final nowPlayingResponse = NowPlayingResponse.fromRawJson(jsonData);
 
     onDisplayMovies = nowPlayingResponse.results;
     notifyListeners();
   }
 
   getPopularMovie() async {
-    var url = Uri.https(_baseUrl, '3/movie/popular',
-        {'api_key': _apiKey, 'language': _language, 'page': '1'});
+    _popularPage++;
 
-    // Await the http get response, then decode the json-formatted response.
-    final response = await http.get(url);
-    final popularResponse = PopularResponse.fromRawJson(response.body);
+    final jsonData = await this._getJasonData('3/movie/popular', _popularPage);
+    final popularResponse = PopularResponse.fromRawJson(jsonData);
 
-    onDisplayMovies = [...popularMovies, ...popularResponse.results];
-    print(popularMovies);
+    popularMovies = [...popularMovies, ...popularResponse.results];
+
     notifyListeners();
   }
 }
