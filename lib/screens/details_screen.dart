@@ -75,13 +75,16 @@ class _PostedAndTitle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-              placeholder: AssetImage('assets/noimg.jpg'),
-              image: NetworkImage(movie.fullPosterImg),
-              height: 150,
-              width: 110,
+          Hero(
+            tag: movie.id,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/noimg.jpg'),
+                image: NetworkImage(movie.fullPosterImg),
+                height: 150,
+                // width: 110,
+              ),
             ),
           ),
           SizedBox(
